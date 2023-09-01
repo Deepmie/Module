@@ -1,6 +1,10 @@
 <template>
     <div>
         <el-card>
+            <el-radio-group v-model="chooseToken">
+                <el-radio label="useToken"></el-radio>
+                <el-radio label="nouseToken"></el-radio>
+            </el-radio-group>
             <el-header style="margin-left:-20px;"><h2>
                 这是一个测试前后端交互的接口
             </h2></el-header>
@@ -91,6 +95,7 @@ export default {
             tableData:[],
             userInfo:{password:"123456",username:"root"},
             pk:1,
+            chooseToken:"useToken",
         }
     },
     methods:{
@@ -171,6 +176,12 @@ export default {
         urlName(){
           return (this.radio2==='built-in')?"configuser":"customuser";
         },
+    },
+    watch:{
+        chooseToken(){
+            this.$ajax.defaults.headers.common['Authorization']=(this.chooseToken==='useToken')?'Token '+sessionStorage.getItem('token'):''
+            console.log(this.$ajax.defaults.headers.common['Authorization'])
+        }
     }
     
 }

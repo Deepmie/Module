@@ -1,8 +1,10 @@
 from django.shortcuts import render,HttpResponse
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, authentication_classes,permission_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from rest_framework import serializers
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from .models import Customed_User,User
 import json
@@ -38,11 +40,15 @@ class CustomUserSerializers(serializers.ModelSerializer):
     #     return User.objects.create_user(**valid_data)
 
 class CustomUserView(ModelViewSet):
+    authentication_classes=(TokenAuthentication,)
+    permission_classes=(IsAuthenticated,)
     queryset=Customed_User.objects.all()
     serializer_class=CustomUserSerializers
 
 
 @api_view(('GET','POST',))
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
 # @renderer_classes((JSONRenderer))
 def test(request):
     if request.method=='GET':

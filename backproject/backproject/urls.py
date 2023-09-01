@@ -23,7 +23,7 @@ router.register('baseuser',views.UserView,basename='baseuser')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('setuser/',authtokenviews.obtain_auth_token),
+    path('getoken/',authtokenviews.obtain_auth_token),
     path('test/',include('app01.urls',namespace='son')),
 ]
 urlpatterns+=router.urls
